@@ -10,7 +10,6 @@ var config = {
     type: Phaser.AUTO,
     width: canvas_width,
     height: canvas_height,
-    scene: myGame.scenes,
     parent: 'gameDiv',
 };
 
@@ -50,10 +49,10 @@ function onSocketConnected() {
 
 // Envuelve los estados de juego
 var gameBootStrapper = {
-    init: function(gameContainerElementId){
+    init: function(gameContainerElementId, game){
         game.state.add('main', main);
         game.state.start('main');
     }
 };;
 
-gameBootStrapper.init("gameDiv");
+gameBootStrapper.init("gameDiv", game);
