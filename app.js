@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 
+// Agrega un puerto de respuesta y arroja una respuesta dependiendo del url
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
@@ -13,8 +14,9 @@ console.log('Server Started')
 
 var SOCKET_LIST = {};
 
+// Sockets
 var io = require('socket.io')(server, {});
-io.sockets.on('connection', function(sockets){
+io.sockets.on('connection', function(socket){
     socket.id = Math.random();
     socket.x = 0;
     socket.y = 0;
