@@ -30,6 +30,8 @@ var main = function(game){
 main.prototype = {
     preload: function() {
         // Esta funcion se llama cuando se carga el juego
+        game.load.image('robot', 'client/assets/RobotSprite/0.png');
+        game.load.spritesheet('robot','client/assets/RobotSprite/walk1.png', 74, 75, 50);
     },
     create: function() {
         console.log('client started');
@@ -37,6 +39,7 @@ main.prototype = {
         // El server emite un mensaje "connect" cuando el cliente se conecta
         // Cuando el cliente se conecta se llama la funcion onSocketConnected.
         socket.on("connect", onSocketConnected);
+        this.robot=game.add.sprite(game.world.centerX,game.world.centerX)
     }
 }
 

@@ -8,6 +8,7 @@ var mainMenuState = new Phaser.Class({
   
     preload: function() {
         // Se cargan las imagenes para este estado
+        
     },
 
     create: function() {
