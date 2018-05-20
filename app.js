@@ -1,40 +1,29 @@
+//Se importa express.js
+
 var express = require('express');
+// Se asigna a la variable app
 var app = express();
-var server = require('http').Server(app);
+//Crea el servidor 
+var serv = require('http').Server(app); //Server-11
 
-// Agrega un puerto de respuesta y arroja una respuesta dependiendo del url
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/client/index.html');
+//Envia el index.html cuando se hace un request a la 
+//ruta indicada, en este caso es ('/')
+app.get('/',function(req, res) {
+	res.sendFile(__dirname + '/client/index.html');
 });
 
-app.use('/client', express.static(__dirname + '/client'));
+app.use('/client',express.static(__dirname + '/client'));
 
-server.listen('2000');
-console.log('Server Started')
+// Se habilita el puerto 2000
+serv.listen(process.env.PORT || 2000);
+console.log("Server started.");
 
-var SOCKET_LIST = {};
+ // enlaza el objeto serv con socket.io
+var io = require('socket.io')(serv,{});
 
-// Sockets
-var io = require('socket.io')(server, {});
+// Espera los request de conexión por parte del cliente
 io.sockets.on('connection', function(socket){
-    socket.id = Math.random();
-    socket.x = 0;
-    socket.y = 0;
-    SOCKET_LIST[socket.id] = socket;
-
-    console.log('Socket Connection');
+	console.log("socket connected"); 
+	// muestra el id del socket
+	console.log(socket.id);
 });
-
-setInterval(function(){
-    
-    for(var i in SOCKET_LIST){
-        var socket = SOCKET_LIST[i];
-        socket.x++;
-        socket.y++;
-        socket.emit('newPosition', {
-            x: socket.x,
-            y: socket.y,
-        });
-    }
-
-}, 1000/25);

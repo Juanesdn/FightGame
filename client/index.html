@@ -15,24 +15,9 @@
   <script src="/client/js/MainMenu.js"></script>
   <script src="/client/js/GamePlay.js"></script>
 
-  <!-- Conexion con el socket -->
-  <script>
-    var socket = io();
-    </script>
 </head>
   
 <body>
-  <script>
-      //Crea la configuracionn cuando carga la pagina
-      var config = {
-        type: Phaser.AUTO,
-        width: 1000,
-        height: 600,
-        scene: myGame.scenes
-      };
-    
-      //Instancia el juego con la configuracion
-      var game = new Phaser.Game(config);
-    </script>
+  <script src="/client/js/Main.js"></script>
   </body>
 </html>
