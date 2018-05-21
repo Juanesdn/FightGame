@@ -23,8 +23,8 @@ io.on('connection',function(socket){
     socket.on('newplayer',function(){
         socket.player = {
             id: server.lastPlayderID++,
-            x: randomInt(100,400),
-            y: randomInt(100,400),
+            x: 400,
+            y: 300,
             maxSpd: 3,
         };
         socket.emit('allplayers',getAllPlayers());
@@ -36,9 +36,12 @@ io.on('connection',function(socket){
             }else if (data.direction == 'right'){
                 socket.player.x += socket.player.maxSpd;
             }
-            io.emit('move',socket.player);
+            io.emit('move',{player:socket.player,direction:data.direction});
         });
 
+        socket.on('getplayer',function(){
+            io.emit('getplayer',socket.player.id);
+        })
 
         socket.on('disconnect',function(){
             io.emit('remove',socket.player.id);
