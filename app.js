@@ -36,12 +36,8 @@ io.on('connection',function(socket){
             }else if (data.direction == 'right'){
                 socket.player.x += socket.player.maxSpd;
             }
-            io.emit('move',{player:socket.player,direction:data.direction});
+            io.emit('move',socket.player);
         });
-
-        socket.on('getplayer',function(){
-            io.emit('getplayer',socket.player.id);
-        })
 
         socket.on('disconnect',function(){
             io.emit('remove',socket.player.id);
