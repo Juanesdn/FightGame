@@ -20,12 +20,9 @@ Game.update = function(){
         Client.sendMove('left');
     }else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         Client.sendMove('right');
-    }else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)){
-        Client.sendMove('up');
-    }else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
-        Client.sendMove('down');
     }
-}
+};
+
 
 
 Game.movePlayer = function(id, x, y){
@@ -34,7 +31,7 @@ Game.movePlayer = function(id, x, y){
     var tween = game.add.tween(player);
     tween.to({x:x,y:y}, 0.1);
     tween.start();
-}
+};
 
 
 Game.addNewPlayer = function(id,x,y){
@@ -45,5 +42,3 @@ Game.removePlayer = function(id){
     Game.playerMap[id].destroy();
     delete Game.playerMap[id];
 };
-
-
