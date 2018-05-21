@@ -10,8 +10,8 @@ Client.askNewPlayer = function(){
     Client.socket.emit('newplayer');
 };
 
-Client.sendClick = function(x,y){
-  Client.socket.emit('click',{x:x,y:y});
+Client.sendMove = function(direction){
+    Client.socket.emit('move',{direction:direction});
 };
 
 Client.socket.on('newplayer',function(data){
@@ -22,9 +22,12 @@ Client.socket.on('remove',function(id){
     Game.removePlayer(id);
 });
 
+Client.socket.on('move',function(data){
+    Game.movePlayer(data.id,data.x,data.y);
+});
+
 Client.socket.on('allplayers',function(data){
     for(var i = 0; i < data.length; i++){
         Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
     }
-
 });

@@ -24,15 +24,18 @@ io.on('connection',function(socket){
         socket.player = {
             id: server.lastPlayderID++,
             x: randomInt(100,400),
-            y: randomInt(100,400)
+            y: randomInt(100,400),
+            maxSpd: 3,
         };
         socket.emit('allplayers',getAllPlayers());
         socket.broadcast.emit('newplayer',socket.player);
 
-        socket.on('click',function(data){
-            console.log('click to '+data.x+', '+data.y);
-            socket.player.x = data.x;
-            socket.player.y = data.y;
+        socket.on('move',function(data){
+            if (data.direction == 'left'){
+                socket.player.x -= socket.player.maxSpd;
+            }else if (data.direction == 'right'){
+                socket.player.x += socket.player.maxSpd;
+            }
             io.emit('move',socket.player);
         });
 
