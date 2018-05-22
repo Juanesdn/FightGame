@@ -16,6 +16,7 @@ Game.create = function(){
     Game.playerBlock = {};
 
     game.add.tileSprite(0, 0, 800, 600, 'fondo');
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     Client.askNewPlayer();
 };
 
@@ -34,7 +35,28 @@ Game.update = function(){
     } else{
         Client.sendMove('none');
     }
+
+    if(Object.keys(Game.playerMap).length == 2){
+        game.physics.arcade.collide(Game.playerMap[0], Game.playerMap[1])
+    }
     
+};
+
+Game.render = function(){
+    if(Object.keys(Game.playerMap).length == 2){
+        game.debug.body(Game.playerMap[0]);
+        game.debug.body(Game.playerMap[1]);
+    }
+}
+
+Game.HandleCollision = function(){
+    if(Game.playerPunch[0] && !Game.playerBlock[1]){
+        console.log("hit");
+    }
+
+    if(Game.playerPunch[1] && !Game.playerBlock[0]){
+        console.log("hit");
+    }
 };
 
 Game.movePlayer = function(id, x, y, punch, block){
@@ -80,6 +102,10 @@ Game.addNewPlayer = function(id,x,y){
         Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_red");
         Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_red");
         Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_red");
+        game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
+        Game.playerMap[id].body.collideWorldBounds = true;
+        Game.playerMap[id].body.onCollide = new Phaser.Signal();
+        Game.playerMap[id].body.onCollide.add(Game.HandleCollision, this);
     } else {
         Game.playerPunch[id] = false;
         Game.playerBlock[id] = false;
@@ -88,6 +114,10 @@ Game.addNewPlayer = function(id,x,y){
         Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_blue");
         Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_blue");
         Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_blue");
+        game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
+        Game.playerMap[id].body.collideWorldBounds = true;
+        Game.playerMap[id].body.onCollide = new Phaser.Signal();
+        Game.playerMap[id].body.onCollide.add(Game.HandleCollision, this);
     }
 
     

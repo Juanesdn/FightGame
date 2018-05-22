@@ -48,6 +48,10 @@ io.on('connection',function(socket){
             io.emit('move',socket.player);
         });
 
+        socket.on('collided', function(){
+            io.emit('collided', socket.player.id);
+        })
+
         socket.on('disconnect',function(){
             server.lastPlayderID--;
             io.emit('remove',socket.player.id);
