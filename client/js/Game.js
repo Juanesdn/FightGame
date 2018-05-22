@@ -6,11 +6,15 @@ Game.init = function(){
 
 Game.preload = function() {
     game.load.image('fondo', '/client/assets/img/2.jpg');    
-    game.load.spritesheet('sprite','/client/assets/sprites/robot_blue.png', 80, 111,35); // this will be the sprite of the players
+    game.load.spritesheet('robot_red','/client/assets/sprites/robot_red.png', 80, 111,35);
+    game.load.spritesheet('robot_blue','/client/assets/sprites/robot_blue.png', 80, 111,35);
 };
 
 Game.create = function(){
     Game.playerMap = {};
+    Game.playerPunch = {};
+    Game.playerBlock = {};
+
     game.add.tileSprite(0, 0, 800, 600, 'fondo');
     Client.askNewPlayer();
 };
@@ -19,20 +23,30 @@ Game.update = function(){
     if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
         Client.sendMove('left');
         
-        
     }else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         Client.sendMove('right');
+    }else if (game.input.keyboard.isDown(Phaser.Keyboard.Q) ||
+              game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+        Client.sendMove('punch');
+    }else if (game.input.keyboard.isDown(Phaser.Keyboard.E) ||
+              game.input.keyboard.isDown(Phaser.Keyboard.R)) {
+        Client.sendMove('block');
     } else{
         Client.sendMove('none');
     }
+    
 };
 
-Game.movePlayer = function(id, x, y){
+Game.movePlayer = function(id, x, y, punch, block){
     var player = Game.playerMap[id];
+    Game.playerPunch[id] = punch;
+    Game.playerBlock[id] = block;
     var distance = Phaser.Math.distance(player.x,x);
     var tween = game.add.tween(player);
     tween.to({x:x,y:y}, 0.1);
     tween.start();
+
+    
     //Animations of the robot
     if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         player.animations.play('walk');
@@ -58,11 +72,25 @@ Game.movePlayer = function(id, x, y){
 };
 
 Game.addNewPlayer = function(id,x,y){
-    Game.playerMap[id] = game.add.sprite(x,y,'sprite');
-    Game.playerMap[id].animations.add('walk', [10,11,12,13,14,15,16,17], 12,true, "sprite");
-    Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "sprite");
-    Game.playerMap[id].animations.add('punch', [10,14,19], 25,false, "sprite");
-    Game.playerMap[id].animations.add('block', [24,25,25], 12,false);
+    if (id == 0){
+        Game.playerPunch[id] = false;
+        Game.playerBlock[id] = false;
+        Game.playerMap[id] = game.add.sprite(x,y,'robot_red');
+        Game.playerMap[id].animations.add('walk', [10,11,12,13,14,15,16,17], 12,true, "robot_red");
+        Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_red");
+        Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_red");
+        Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_red");
+    } else {
+        Game.playerPunch[id] = false;
+        Game.playerBlock[id] = false;
+        Game.playerMap[id] = game.add.sprite(x,y,'robot_blue');
+        Game.playerMap[id].animations.add('walk', [10,11,12,13,14,15,16,17], 12,true, "robot_blue");
+        Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_blue");
+        Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_blue");
+        Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_blue");
+    }
+
+    
 };
 
 Game.removePlayer = function(id){

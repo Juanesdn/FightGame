@@ -1,11 +1,6 @@
 var Client = {};
 Client.socket = io.connect();
 
-Client.sendTest = function(){
-    console.log("test sent");
-    Client.socket.emit('test');
-};
-
 Client.askNewPlayer = function(){
     Client.socket.emit('newplayer');
 };
@@ -23,11 +18,13 @@ Client.socket.on('remove',function(id){
 });
 
 Client.socket.on('move',function(data){
-    Game.movePlayer(data.id,data.x,data.y);
+    Game.movePlayer(data.id,data.x,data.y, data.punching, data.blocking);
 });
 
 Client.socket.on('allplayers',function(data){
-    for(var i = 0; i < data.length; i++){
-        Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
+    if (data.length <= 2){
+        for(var i = 0; i < data.length; i++){
+            Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
+        }
     }
 });

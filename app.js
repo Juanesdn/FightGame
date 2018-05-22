@@ -25,7 +25,9 @@ io.on('connection',function(socket){
             id: server.lastPlayderID++,
             x: 400,
             y: 300,
-            maxSpd: 3,
+            punching: false,
+            blocking: false,
+            maxSpd: 3
         };
         socket.emit('allplayers',getAllPlayers());
         socket.broadcast.emit('newplayer',socket.player);
@@ -35,11 +37,19 @@ io.on('connection',function(socket){
                 socket.player.x -= socket.player.maxSpd;
             }else if (data.direction == 'right'){
                 socket.player.x += socket.player.maxSpd;
+            }else if (data.direction == 'punch'){
+                socket.player.punching = true;
+            }else if (data.direction == 'block'){
+                socket.player.blocking = true;
+            } else if (data.direction == 'none') {
+                socket.player.punching = false;
+                socket.player.blocking = false;
             }
             io.emit('move',socket.player);
         });
 
         socket.on('disconnect',function(){
+            server.lastPlayderID--;
             io.emit('remove',socket.player.id);
         });
     });
