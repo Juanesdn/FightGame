@@ -21,6 +21,10 @@ Client.sendHit = function(id){
     Client.socket.emit('hit', {id:id});
 }
 
+Client.sendDisconnect = function(){
+    Client.socket.emit('disconnect');
+}
+
 Client.socket.on('newplayer',function(data){
     Game.addNewPlayer(data.id,data.x,data.y, data.life);
 });

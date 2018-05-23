@@ -6,7 +6,9 @@ Game.init = function(){
 };
 
 Game.preload = function() {
-    game.load.image('fondo', '/client/assets/img/2.jpg');    
+    game.load.image('fondo', '/client/assets/img/2.jpg');
+    game.load.image('win_player1', '/client/assets/img/player_1_win.png');
+    game.load.image('win_player2', '/client/assets/img/player_2_win.png');
     game.load.spritesheet('robot_red','/client/assets/sprites/robot_red.png', 80, 111,35);
     game.load.spritesheet('robot_blue','/client/assets/sprites/robot_blueS.png', 80, 111,35);
     game.load.spritesheet('health','/client/assets/img/statBar.png');
@@ -75,8 +77,12 @@ Game.onHit = function(id, life) {
 Game.setGameOver = function(id, gameOver) {
     Game.playerGameOver[id] = gameOver;
 
-    if (Game.playerGameOver[id]){
-        console.log('Game over');
+    if (Game.playerGameOver[id] && id == 0){
+        var img = game.add.sprite(0, 0, 'win_player2');
+        img.scale.setTo(0.5, 0.5);
+    }else {
+        var img = game.add.sprite(0, 0, 'win_player1');
+        img.scale.setTo(0.5, 0.5);
     }
 };
 
