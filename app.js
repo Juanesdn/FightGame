@@ -28,6 +28,7 @@ io.on('connection',function(socket){
             life: 100,
             punching: false,
             blocking: false,
+            gameOver: false,
             maxSpd: 3
         };
         socket.emit('allplayers',getAllPlayers());
@@ -51,6 +52,22 @@ io.on('connection',function(socket){
 
         socket.on('collided', function(){
             io.emit('collided', socket.player.id);
+        })
+
+        socket.on('hit', function(data){
+            var players = getAllPlayers();
+            var player = players[data.id];
+            if (player.life > 0){
+                player.life -= 0.2;
+            }
+            io.emit('hit', player);
+        })
+
+        socket.on('gameOver', function(data){
+            var players = getAllPlayers();
+            var player = players[data.id];
+            player.gameOver = true;
+            io.emit('gameOver', player);
         })
 
         socket.on('disconnect',function(){

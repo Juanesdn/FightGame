@@ -13,9 +13,21 @@ Client.sendCollision = function(){
     Client.socket.emit('collided');
 }
 
+Client.sendGameOver = function(id){
+    Client.socket.emit('gameOver', {id:id});
+}
+
+Client.sendHit = function(id){
+    Client.socket.emit('hit', {id:id});
+}
+
 Client.socket.on('newplayer',function(data){
-    Game.addNewPlayer(data.id,data.x,data.y);
+    Game.addNewPlayer(data.id,data.x,data.y, data.life);
 });
+
+Client.socket.on('gameOver', function(data){
+    Game.setGameOver(data.id, data.gameOver);
+})
 
 Client.socket.on('remove',function(id){
     Game.removePlayer(id);
@@ -27,6 +39,10 @@ Client.socket.on('move',function(data){
 
 Client.socket.on('collided', function(data){
     Game.HandleCollision(data);
+})
+
+Client.socket.on('hit', function(data){
+    Game.onHit(data.id, data.life);
 })
 
 Client.socket.on('allplayers',function(data){
