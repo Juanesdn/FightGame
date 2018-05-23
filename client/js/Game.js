@@ -8,6 +8,7 @@ Game.preload = function() {
     game.load.image('fondo', '/client/assets/img/2.jpg');    
     game.load.spritesheet('robot_red','/client/assets/sprites/robot_red.png', 80, 111,35);
     game.load.spritesheet('robot_blue','/client/assets/sprites/robot_blueS.png', 80, 111,35);
+    game.load.spritesheet('robot_red','/client/assets/sprites/robot_red.png', 204, 6);
 };
 
 Game.create = function(){
@@ -94,7 +95,7 @@ Game.movePlayer = function(id, x, y, punch, block){
 };
 
 Game.addNewPlayer = function(id,x,y){
-    if (id == 0){
+    if (id == 1){
         Game.playerPunch[id] = false;
         Game.playerBlock[id] = false;
         Game.playerMap[id] = game.add.sprite(x,y,'robot_red');
@@ -110,10 +111,10 @@ Game.addNewPlayer = function(id,x,y){
         Game.playerPunch[id] = false;
         Game.playerBlock[id] = false;
         Game.playerMap[id] = game.add.sprite(x,y,'robot_blue');
-        Game.playerMap[id].animations.add('walk', [10,11,12,13,14,15,16,17], 12,true, "robot_blueS");
-        Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_blueS");
-        Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_blueS");
-        Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_blueS");
+        Game.playerMap[id].animations.add('walk', [10,11,12,13,14,15,16,17], 12,true, "robot_blue");
+        Game.playerMap[id].animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 12,true, "robot_blue");
+        Game.playerMap[id].animations.add('punch', [10,19], 12,false, "robot_blue");
+        Game.playerMap[id].animations.add('block', [24,25,25], 12,false, "robot_blue");
         game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
         Game.playerMap[id].body.collideWorldBounds = true;
         Game.playerMap[id].body.onCollide = new Phaser.Signal();
