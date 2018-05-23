@@ -25,6 +25,7 @@ io.on('connection',function(socket){
             id: server.lastPlayderID++,
             x: 400,
             y: 300,
+            life: 100,
             punching: false,
             blocking: false,
             maxSpd: 3

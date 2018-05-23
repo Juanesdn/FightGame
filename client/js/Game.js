@@ -7,7 +7,7 @@ Game.init = function(){
 Game.preload = function() {
     game.load.image('fondo', '/client/assets/img/2.jpg');    
     game.load.spritesheet('robot_red','/client/assets/sprites/robot_red.png', 80, 111,35);
-    game.load.spritesheet('robot_blue','/client/assets/sprites/robot_blue.png', 80, 111,35);
+    game.load.spritesheet('robot_blue','/client/assets/sprites/robot_blueS.png', 80, 111,35);
 };
 
 Game.create = function(){
