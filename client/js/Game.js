@@ -47,12 +47,12 @@ Game.update = function(){
     
 };
 
-Game.render = function(){
+/*Game.render = function(){
     if(Object.keys(Game.playerMap).length == 2){
         game.debug.body(Game.playerMap[0]);
         game.debug.body(Game.playerMap[1]);
     }
-}
+}*/
 
 Game.HandleCollision = function(){
     if(Game.playerPunch[0] && !Game.playerBlock[1]){
